@@ -2,6 +2,9 @@ package com.pharmx.shop.model;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pharmx.shop.dto.CustomerDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +18,7 @@ public class Customer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(nullable = false)
+	@JsonIgnore
 	private String password;
 	@Column(nullable = false)
 	private String email;
@@ -78,9 +82,29 @@ public class Customer {
 		this.password = password;
 	}
 	
+	public Customer(String name, String email) {
+		super();
+		this.name = name;
+		this.email = email;
+	}
+	
 	public Customer() {
 
 	}
+
+	public CustomerDTO toDTO() {
+	    CustomerDTO dto = new CustomerDTO();
+	    dto.setId(this.id);
+	    dto.setName(this.name);
+	    dto.setEmail(this.email);
+	    return dto;
+	}
+	
+	public Customer toObject() {
+		return new Customer(name, email, password);
+	}
+	
+	
 	
 }
 
