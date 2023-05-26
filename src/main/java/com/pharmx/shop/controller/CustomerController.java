@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pharmx.shop.DTO.CustomerDTO;
+import com.pharmx.shop.dto.CustomerDTO;
 import com.pharmx.shop.model.Customer;
 import com.pharmx.shop.services.CustomerService;
 
@@ -44,10 +44,11 @@ public class CustomerController {
 	}
 	
 	@GetMapping("/{id}")
-	public Customer getCustomerById(@PathVariable Long id) {
+	public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Long id) {
 	    Customer customer = customerService.getCustomerById(id);
 	    if (customer != null) {
-	        return customer;
+	        CustomerDTO customerDTO = customer.toDTO();
+	        return new ResponseEntity<>(customerDTO, HttpStatus.OK);
 	    } else {
 	        throw new ResourceNotFoundException("Customer with ID " + id + " not found.");
 	    }
